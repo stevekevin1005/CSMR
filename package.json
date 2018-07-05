@@ -1,9 +1,12 @@
 {
-  "name": "CSMR",
-  "version": "1.0.0",
-  "description": "CF(Collaborative Filtering)-based Movie Recommendation Service",
-  "main": "index.js",
-  "author": "Steve Chang",
-  "license": "MIT",
-  "private": true
+    "name": "CSMR",
+    "version": "1.0.0",
+    "description": "CF(Collaborative Filtering)-based Movie Recommendation Service",
+    "main": "index.js",
+    "author": "Steve Chang",
+    "license": "MIT",
+    "private": true,
+    "dependencies": {
+        "koa": "^2.5.1"
+    }
 }

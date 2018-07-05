@@ -7,6 +7,10 @@
     "license": "MIT",
     "private": true,
     "dependencies": {
-        "koa": "^2.5.1"
+        "koa": "^2.5.1",
+        "koa-router": "^7.4.0"
+    },
+    "scripts": {
+        "start": "node src/server/index.js"
     }
 }

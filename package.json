@@ -1,5 +1,5 @@
 {
-    "name": "CSMR",
+    "name": "csmr",
     "version": "1.0.0",
     "description": "CF(Collaborative Filtering)-based Movie Recommendation Service",
     "main": "index.js",
@@ -13,6 +13,8 @@
         "koa": "^2.5.1",
         "koa-bodyparser": "^4.2.1",
         "koa-logger": "^3.2.0",
+        "koa-res": "^3.1.0",
+        "koa-respond": "^1.0.1",
         "koa-router": "^7.4.0",
         "koa-static": "^5.0.0",
         "pg": "^7.4.3"

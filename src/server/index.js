@@ -5,7 +5,7 @@ const serve = require('koa-static');
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const logger = require('koa-logger');
-const genres = require('koa-res');
+const views = require('koa-views');
 // jwt
 const jwt = require('jsonwebtoken');
 const jwtKoa = require('koa-jwt');
@@ -18,15 +18,19 @@ const controller = require('./controller')();
 const respond = require('koa-respond');
 app.use(bodyParser());
 app.use(respond());
-app.use(genres({ debug: true }));
 app.use(logger());
 app.use(jwtKoa({ secret: CONFIG.JWT_SECRET }).unless({
     path: [
+        /\/assets\/*/,
+        '/',
         '/api/user/check',
         '/api/user/login',
         '/api/user/register'
     ]
-}))
+}));
+app.use(views(__dirname, {
+    extension: 'html'
+}));
 app.use(serve(__dirname + '/../../frontend'));
 app.use(controller.routes());
 app.use(controller.allowedMethods());

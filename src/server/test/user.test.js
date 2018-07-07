@@ -18,9 +18,8 @@ describe('User function test:', () => {
             .end((err, res) => {
                 expect(res.statusCode).to.equal(200);
                 expect(res.body).to.be.an('object');
-                expect(res.body.data).to.be.an('object');
-                expect(res.body.data.status).to.equal('success');
-                expect(res.body.data.token).to.be.an('string');
+                expect(res.body.status).to.equal('success');
+                expect(res.body.token).to.be.an('string');
                 done();
             });
     });
@@ -35,8 +34,8 @@ describe('User function test:', () => {
             .end((err, res) => {
                 expect(res.statusCode).to.equal(202);
                 expect(res.body).to.be.an('object');
-                expect(res.body.data).to.be.an('object');
-                expect(res.body.data.status).to.equal('error');
+                expect(res.body).to.be.an('object');
+                expect(res.body.status).to.equal('error');
                 done();
             });
     });
@@ -52,9 +51,8 @@ describe('User function test:', () => {
             .end((err, res) => {
                 expect(res.statusCode).to.equal(200);
                 expect(res.body).to.be.an('object');
-                expect(res.body.data).to.be.an('object');
-                expect(res.body.data.status).to.equal('success');
-                expect(res.body.data.token).to.be.an('string');
+                expect(res.body.status).to.equal('success');
+                expect(res.body.token).to.be.an('string');
                 done();
             });
     });

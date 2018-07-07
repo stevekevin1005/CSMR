@@ -24,6 +24,7 @@ app.use(jwtKoa({ secret: CONFIG.JWT_SECRET }).unless({
     path: [
         '/api/user/check',
         '/api/user/login',
+        '/api/user/register'
     ]
 }))
 app.use(serve(__dirname + '/../../frontend'));

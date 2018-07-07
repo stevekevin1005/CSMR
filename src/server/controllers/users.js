@@ -49,6 +49,34 @@ let userLogin = async(ctx, next) => {
     }
 }
 
+let userRegister = async(ctx, next) => {
+    try {
+        let email = ctx.request.body.email;
+        let password = ctx.request.body.password;
+        if (email == undefined || email == '') throw ("no email entered.");
+        if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(email)) throw ("email is illegal.");
+        if (await userFunction.checkEmail(email)) throw ("email is exist.");
+
+        await userFunction.userRegister(email, password);
+
+        let userToken = {
+            email: email
+        };
+        let token = jwt.sign(userToken, CONFIG.JWT_SECRET, { expiresIn: '1h' });
+
+        ctx.send(200, {
+            status: 'success',
+            description: 'user register.',
+            token: token
+        });
+    } catch (err) {
+        ctx.send(403, {
+            status: 'error',
+            description: err
+        });
+    }
+}
+
 module.exports = [{
     method: 'get',
     uri: '/api/user/check',
@@ -57,4 +85,8 @@ module.exports = [{
     method: 'post',
     uri: '/api/user/login',
     fn: userLogin,
+}, {
+    method: 'post',
+    uri: '/api/user/register',
+    fn: userRegister,
 }]

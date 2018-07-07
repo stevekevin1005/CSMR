@@ -1,5 +1,6 @@
 const knex = require('../db/connection');
 const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 let checkEmail = async(email) => {
     let user = await knex('users')
@@ -21,7 +22,15 @@ let verifyIdentidy = async(email, password) => {
     return verify;
 }
 
+let userRegister = async(email, password) => {
+    return await knex('users').insert({
+        email: email,
+        password: bcrypt.hashSync(password, saltRounds)
+    });
+}
+
 module.exports = {
     checkEmail,
-    verifyIdentidy
+    verifyIdentidy,
+    userRegister
 };

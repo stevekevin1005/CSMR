@@ -8,10 +8,12 @@
     "private": true,
     "dependencies": {
         "bcrypt": "^2.0.1",
+        "jsonwebtoken": "^8.3.0",
         "knex": "^0.15.0",
         "knex-csv-transformer": "^1.0.4",
         "koa": "^2.5.1",
         "koa-bodyparser": "^4.2.1",
+        "koa-jwt": "^3.3.2",
         "koa-logger": "^3.2.0",
         "koa-res": "^3.1.0",
         "koa-respond": "^1.0.1",
@@ -21,5 +23,10 @@
     },
     "scripts": {
         "start": "node src/server/index.js"
+    },
+    "devDependencies": {
+        "chai": "^4.1.2",
+        "mocha": "^5.2.0",
+        "supertest": "^3.1.0"
     }
 }

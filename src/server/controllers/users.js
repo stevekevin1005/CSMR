@@ -1,4 +1,5 @@
 const userFunction = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 let userCheck = async(ctx, next) => {
     try {
@@ -29,9 +30,15 @@ let userLogin = async(ctx, next) => {
         if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(email)) throw ("email is illegal.");
         if (!await userFunction.verifyIdentidy(email, password)) throw ("email or password is incorrect.");
 
+        let userToken = {
+            email: email
+        };
+        let token = jwt.sign(userToken, CONFIG.JWT_SECRET, { expiresIn: '1h' });
+
         ctx.send(200, {
             status: 'success',
-            description: 'user login.'
+            description: 'user login.',
+            token: token
         });
 
     } catch (err) {

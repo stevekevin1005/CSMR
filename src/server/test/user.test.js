@@ -34,7 +34,6 @@ describe('User function test:', () => {
             .end((err, res) => {
                 expect(res.statusCode).to.equal(202);
                 expect(res.body).to.be.an('object');
-                expect(res.body).to.be.an('object');
                 expect(res.body.status).to.equal('error');
                 done();
             });

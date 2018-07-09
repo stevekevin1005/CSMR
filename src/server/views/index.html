@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="csmrAPP">
 <!-- BEGIN HEAD -->
 
 <head>
@@ -21,10 +21,20 @@
     <link href="assets/base/css/components.css" id="style_components" rel="stylesheet" type="text/css" />
     <link href="assets/base/css/themes/default.css" rel="stylesheet" id="style_theme" type="text/css" />
     <!-- END THEME STYLES -->
+    <style>
+        [ng\:cloak],
+        [ng-cloak],
+        [data-ng-cloak],
+        [x-ng-cloak],
+        .ng-cloak,
+        .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
 
     <body class="c-layout-header-fixed c-layout-header-mobile-fixed">
         <!-- BEGIN: HEADER -->
-        <header class="c-layout-header c-layout-header-4 c-layout-header-default-mobile" data-minimize-offset="80">
+        <header ng-controller="loginCtrl" class="c-layout-header c-layout-header-4 c-layout-header-default-mobile" data-minimize-offset="80">
             <div class="c-navbar">
                 <div class="container">
                     <!-- BEGIN: BRAND -->
@@ -36,7 +46,15 @@
                         <!-- BEGIN: HOR NAV -->
                         <nav class="c-mega-menu c-pull-right c-mega-menu-dark c-mega-menu-dark-mobile c-fonts-uppercase c-fonts-bold">
                             <ul class="nav navbar-nav c-theme-nav">
-                                <li>
+                                <li ng-if="data.loginStatus" class="ng-cloak">
+                                    <a href="javascript:;" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-sbold">
+                                        <i class="icon-user"></i> Welcome, {{ data.email }}! </a>
+                                </li>
+                                <li ng-if="data.loginStatus" class="ng-cloak">
+                                    <a href="javascript:;" ng-click="logout()" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-sbold">
+                                        <i class="icon-user"></i> Logout </a>
+                                </li>
+                                <li ng-if="!data.loginStatus" class="ng-cloak">
                                     <a href="javascript:;" data-toggle="modal" data-target="#login-form" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                         <i class="icon-user"></i> Sign In</a>
                                 </li>
@@ -46,69 +64,79 @@
                     </div>
                 </div>
             </div>
+            <!-- END: HEADER -->
+            <!-- BEGIN: CONTENT/USER/SIGNUP-FORM -->
+            <div class="modal fade c-content-login-form" id="signup-form" role="dialog" ng-if="!data.loginStatus" class="ng-cloak">
+                <div class="modal-dialog">
+                    <div class="modal-content c-square">
+                        <div class="modal-header c-no-border">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_sign_up_form">
+										<span aria-hidden="true">&times;</span>
+									</button>
+                        </div>
+                        <div class="modal-body">
+                            <h3 class="c-font-24 c-font-sbold">Create An Account</h3>
+                            <p>Please fill in below form to create an account with us</p>
+                            <form>
+                                <div class="form-group">
+                                    <label for="signup-email" class="hide">Email</label>
+                                    <input type="text" class="form-control input-lg c-square" placeholder="Email" ng-model="data.email" ng-change="checkEmailExist()">
+                                    <span style="color:red;">{{ data.sign_up_email_error }}</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="signup-username" class="hide">Password</label>
+                                    <input type="password" class="form-control input-lg c-square" placeholder="Password" ng-model="data.sign_up_password">
+                                    <span style="color:red;">{{ data.sign_up_password_error }}</span>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" ng-click="signUp()" class="btn c-theme-btn btn-md c-btn-uppercase c-btn-bold c-btn-square c-btn-login">Signup</button>
+                                    <a href="javascript:;" class="c-btn-forgot" data-toggle="modal" data-target="#login-form" data-dismiss="modal">Back To Login</a>
+                                </div>
+                                <span style="color:red;">{{ data.sign_up_error }}</span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END: CONTENT/USER/SIGNUP-FORM -->
+            <!-- BEGIN: CONTENT/USER/LOGIN-FORM -->
+            <div class="modal fade c-content-login-form" id="login-form" role="dialog" ng-if="!data.loginStatus" class="ng-cloak">
+                <div class="modal-dialog">
+                    <div class="modal-content c-square">
+                        <div class="modal-header c-no-border">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_login_form">
+										<span aria-hidden="true">&times;</span>
+									</button>
+                        </div>
+                        <div class="modal-body">
+                            <h3 class="c-font-24 c-font-sbold">Good Afternoon!</h3>
+                            <p>Let's make today a great day!</p>
+                            <form>
+                                <div class="form-group">
+                                    <label for="login-email" class="hide">Email</label>
+                                    <input type="text" ng-model="data.email" class="form-control input-lg c-square" placeholder="Email">
+                                    <span style="color:red;">{{ data.email_error }}</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="login-password" class="hide">Password</label>
+                                    <input type="password" ng-model="data.password" class="form-control input-lg c-square" id="login-password" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" ng-click="login()" class="btn c-theme-btn btn-md c-btn-uppercase c-btn-bold c-btn-square c-btn-login">Login</button>
+                                </div>
+                                <span style="color:red;">{{ data.login_error }}</span>
+                            </form>
+                        </div>
+                        <div class="modal-footer c-no-border">
+                            <span class="c-text-account">Don't Have An Account Yet ?</span>
+                            <a href="javascript:;" data-toggle="modal" data-target="#signup-form" data-dismiss="modal" class="btn c-btn-dark-1 btn c-btn-uppercase c-btn-bold c-btn-slim c-btn-border-2x c-btn-square c-btn-signup">Signup!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END: CONTENT/USER/LOGIN-FORM -->
         </header>
-        <!-- END: HEADER -->
-        <!-- BEGIN: CONTENT/USER/SIGNUP-FORM -->
-        <div class="modal fade c-content-login-form" id="signup-form" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content c-square">
-                    <div class="modal-header c-no-border">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h3 class="c-font-24 c-font-sbold">Create An Account</h3>
-                        <p>Please fill in below form to create an account with us</p>
-                        <form>
-                            <div class="form-group">
-                                <label for="signup-email" class="hide">Email</label>
-                                <input type="email" class="form-control input-lg c-square" id="signup-email" placeholder="Email"> </div>
-                            <div class="form-group">
-                                <label for="signup-username" class="hide">Password</label>
-                                <input type="email" class="form-control input-lg c-square" id="signup-password" placeholder="Password"> </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn c-theme-btn btn-md c-btn-uppercase c-btn-bold c-btn-square c-btn-login">Signup</button>
-                                <a href="javascript:;" class="c-btn-forgot" data-toggle="modal" data-target="#login-form" data-dismiss="modal">Back To Login</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END: CONTENT/USER/SIGNUP-FORM -->
-        <!-- BEGIN: CONTENT/USER/LOGIN-FORM -->
-        <div class="modal fade c-content-login-form" id="login-form" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content c-square">
-                    <div class="modal-header c-no-border">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h3 class="c-font-24 c-font-sbold">Good Afternoon!</h3>
-                        <p>Let's make today a great day!</p>
-                        <form>
-                            <div class="form-group">
-                                <label for="login-email" class="hide">Email</label>
-                                <input type="email" class="form-control input-lg c-square" id="login-email" placeholder="Email"> </div>
-                            <div class="form-group">
-                                <label for="login-password" class="hide">Password</label>
-                                <input type="password" class="form-control input-lg c-square" id="login-password" placeholder="Password"> </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn c-theme-btn btn-md c-btn-uppercase c-btn-bold c-btn-square c-btn-login">Login</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer c-no-border">
-                        <span class="c-text-account">Don't Have An Account Yet ?</span>
-                        <a href="javascript:;" data-toggle="modal" data-target="#signup-form" data-dismiss="modal" class="btn c-btn-dark-1 btn c-btn-uppercase c-btn-bold c-btn-slim c-btn-border-2x c-btn-square c-btn-signup">Signup!</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END: CONTENT/USER/LOGIN-FORM -->
+
         <!-- BEGIN: PAGE CONTAINER -->
         <div class="c-layout-page">
             <!-- BEGIN: PAGE CONTENT -->
@@ -149,6 +177,8 @@
         <!-- END: PAGE CONTAINER -->
         <!-- BEGIN: LAYOUT/BASE/BOTTOM -->
         <!-- BEGIN: CORE PLUGINS -->
+        <script src="assets/plugins/angular.min.js" type="text/javascript"></script>
+        <script src="assets/plugins/js.cookie.js" type="text/javascript"></script>
         <script src="assets/plugins/jquery.min.js" type="text/javascript"></script>
         <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <!-- END: CORE PLUGINS -->
@@ -162,6 +192,7 @@
 
             });
         </script>
+        <script src="assets/controller/loginController.js"></script>
         <!-- END: THEME SCRIPTS -->
         <!-- BEGIN: PAGE SCRIPTS -->
         <script src="assets/base/js/scripts/pages/4col-portfolio.js" type="text/javascript"></script>
@@ -169,4 +200,4 @@
         <!-- END: LAYOUT/BASE/BOTTOM -->
     </body>
 
-    </html
+</html>

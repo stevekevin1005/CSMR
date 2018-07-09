@@ -14,7 +14,7 @@ let userCheck = async(ctx, next) => {
         });
 
     } catch (err) {
-        ctx.send(202, {
+        ctx.send(403, {
             status: 'error',
             description: err
         });
@@ -54,6 +54,7 @@ let userRegister = async(ctx, next) => {
         let email = ctx.request.body.email;
         let password = ctx.request.body.password;
         if (email == undefined || email == '') throw ("no email entered.");
+        if (password == undefined || password == '') throw ("no password entered.");
         if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(email)) throw ("email is illegal.");
         if (await userFunction.checkEmail(email)) throw ("email is exist.");
 

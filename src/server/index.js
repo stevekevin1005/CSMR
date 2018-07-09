@@ -25,7 +25,8 @@ app.use(jwtKoa({ secret: CONFIG.JWT_SECRET }).unless({
         '/',
         '/api/user/check',
         '/api/user/login',
-        '/api/user/register'
+        '/api/user/register',
+        '/favicon.ico'
     ]
 }));
 app.use(views(__dirname, {

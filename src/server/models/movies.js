@@ -29,12 +29,13 @@ getMovieWithRate = async() => {
         .select('movies.id as id')
         .select('movies.title')
         .select('movies.genre')
-        .sum('movie_like.rate')
+        .sum({ rate: ['movie_like.rate'] })
         .groupBy('movies.id')
         .leftJoin('movie_like', function() {
             this.on('movies.id', '=', 'movie_like.movie_id');
         })
-        .orderBy('id', 'asc');
+        .whereNotNull('rate')
+        .orderBy('rate', 'desc');
 }
 
 rateMovie = async(user_id, movie_id, rate) => {

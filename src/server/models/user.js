@@ -29,8 +29,19 @@ let userRegister = async(email, password) => {
     });
 }
 
+let getUserId = async(email) => {
+    let user = await knex('users')
+        .where({
+            email: email,
+        }).first();
+    if (user == undefined) return false;
+
+    return user.id;
+}
+
 module.exports = {
     checkEmail,
     verifyIdentidy,
-    userRegister
+    userRegister,
+    getUserId
 };

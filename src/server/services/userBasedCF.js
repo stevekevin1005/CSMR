@@ -41,15 +41,17 @@ let calc_user_sim = () => {
     }
 };
 
-let recommend = async(user, from, count) => {
+let recommend = async(user) => {
     try {
-        if (data.trainSet_time != user_sim_matrix_time) {
+        if (data.trainSet_time != data.user_sim_matrix_time) {
             await calc_user_sim();
             data.trainSet_time = Date.now();
             data.user_sim_matrix_time = Date.now();
         }
         let rank = new Map();
+
         let watched_movies = data.trainSet[user];
+        if (watched_movies == undefined) return [];
         let user_sim_matrix = new Map([...data.user_sim_matrix[user].entries()].sort((a, b) => {
             return a[1] < b[1];
         }).slice(0, data.n_sim_user));
@@ -64,8 +66,9 @@ let recommend = async(user, from, count) => {
 
         return [...rank.entries()].sort((a, b) => {
             return a[1] < b[1];
-        }).slice(from, count);
+        });
     } catch (err) {
+        console.log(err);
         return err;
     }
 };

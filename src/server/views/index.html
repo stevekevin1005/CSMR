@@ -30,6 +30,12 @@
         .x-ng-cloak {
             display: none !important;
         }
+        
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 
     <body class="c-layout-header-fixed c-layout-header-mobile-fixed">
@@ -46,15 +52,15 @@
                         <!-- BEGIN: HOR NAV -->
                         <nav class="c-mega-menu c-pull-right c-mega-menu-dark c-mega-menu-dark-mobile c-fonts-uppercase c-fonts-bold">
                             <ul class="nav navbar-nav c-theme-nav">
-                                <li ng-if="data.loginStatus" class="ng-cloak">
+                                <li ng-if="loginData.loginStatus" class="ng-cloak">
                                     <a href="javascript:;" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-sbold">
-                                        <i class="icon-user"></i> Welcome, {{ data.email }}! </a>
+                                        <i class="icon-user"></i> Welcome, {{ loginData.loginEmail }}! </a>
                                 </li>
-                                <li ng-if="data.loginStatus" class="ng-cloak">
+                                <li ng-if="loginData.loginStatus" class="ng-cloak">
                                     <a href="javascript:;" ng-click="logout()" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-sbold">
                                         <i class="icon-user"></i> Logout </a>
                                 </li>
-                                <li ng-if="!data.loginStatus" class="ng-cloak">
+                                <li ng-if="!loginData.loginStatus" class="ng-cloak">
                                     <a href="javascript:;" data-toggle="modal" data-target="#login-form" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                         <i class="icon-user"></i> Sign In</a>
                                 </li>
@@ -66,7 +72,7 @@
             </div>
             <!-- END: HEADER -->
             <!-- BEGIN: CONTENT/USER/SIGNUP-FORM -->
-            <div class="modal fade c-content-login-form" id="signup-form" role="dialog" ng-if="!data.loginStatus" class="ng-cloak">
+            <div class="modal fade c-content-login-form" id="signup-form" role="dialog" ng-if="!loginData.loginStatus" class="ng-cloak">
                 <div class="modal-dialog">
                     <div class="modal-content c-square">
                         <div class="modal-header c-no-border">
@@ -100,7 +106,7 @@
             </div>
             <!-- END: CONTENT/USER/SIGNUP-FORM -->
             <!-- BEGIN: CONTENT/USER/LOGIN-FORM -->
-            <div class="modal fade c-content-login-form" id="login-form" role="dialog" ng-if="!data.loginStatus" class="ng-cloak">
+            <div class="modal fade c-content-login-form" id="login-form" role="dialog" ng-if="!loginData.loginStatus" class="ng-cloak">
                 <div class="modal-dialog">
                     <div class="modal-content c-square">
                         <div class="modal-header c-no-border">
@@ -138,37 +144,53 @@
         </header>
 
         <!-- BEGIN: PAGE CONTAINER -->
-        <div class="c-layout-page">
+        <div class="c-layout-page" ng-controller="movieCtrl">
             <!-- BEGIN: PAGE CONTENT -->
+
             <div class="c-content-box c-size-md">
                 <div class="container">
-                    <div id="grid-container">
-                        <div class="cbp-item graphic">
+                    <h1>Recommend List</h1>
+                    <div id="grid-container" class="row">
+                        <div class="col-md-3" ng-repeat="movie in data.recommand_list">
                             <div class="cbp-caption">
                                 <div class="cbp-caption-defaultWrap">
                                     <img src="assets/base/img/content/stock/60.jpg" alt="">
                                 </div>
                             </div>
+                            <div class="cbp-l-grid-projects-title" ng-if="loginData.loginStatus">
+                                <label class="radio-inline"><input type="radio" name="optradio" ng-model="data.rate" value="{{ movie.id }}_1" ng-change="rate(data.rate)">1</label>
+                                <label class="radio-inline"><input type="radio" name="optradio" ng-model="data.rate" value="{{ movie.id }}_2" ng-change="rate(data.rate)">2</label>
+                                <label class="radio-inline"><input type="radio" name="optradio" ng-model="data.rate" value="{{ movie.id }}_3" ng-change="rate(data.rate)">3</label>
+                                <label class="radio-inline"><input type="radio" name="optradio" ng-model="data.rate" value="{{ movie.id }}_4" ng-change="rate(data.rate)">4</label>
+                                <label class="radio-inline"><input type="radio" name="optradio" ng-model="data.rate" value="{{ movie.id }}_5" ng-change="rate(data.rate)">5</label>
+                            </div>
+                            <div class="cbp-l-grid-projects-title">{{ movie.title }}</div>
+                            <div class="cbp-l-grid-projects-desc">{{ movie.genre }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="c-content-box c-size-md" ng-if="loginData.loginStatus">
+                <div class="container">
+                    <h1>Scored List</h1>
+                    <div id="grid-container" class="row">
+                        <div class="col-md-3">
+                            <div class="cbp-caption">
+                                <div class="cbp-caption-defaultWrap">
+                                    <img src="assets/base/img/content/stock/60.jpg" alt="">
+                                </div>
+                            </div>
+                            <div class="cbp-l-grid-projects-title">
+                                <label class="radio-inline"><input type="radio" name="optradio">1</label>
+                                <label class="radio-inline"><input type="radio" name="optradio">2</label>
+                                <label class="radio-inline"><input type="radio" name="optradio">3</label>
+                                <label class="radio-inline"><input type="radio" name="optradio">4</label>
+                                <label class="radio-inline"><input type="radio" name="optradio">5</label>
+                            </div>
                             <div class="cbp-l-grid-projects-title">Dashboard</div>
                             <div class="cbp-l-grid-projects-desc">Web Design / Graphic</div>
                         </div>
-                        <div class="cbp-item web-design logos">
-                            <div class="cbp-caption">
-                                <div class="cbp-caption-defaultWrap">
-                                    <img src="assets/base/img/content/stock/61.jpg" alt="">
-                                </div>
-
-                            </div>
-                            <div class="cbp-l-grid-projects-title">World Clock Widget</div>
-                            <div class="cbp-l-grid-projects-desc">Logo / Web Design</div>
-                        </div>
-                    </div>
-                    <div id="loadMore-container" class="cbp-l-loadMore-button c-margin-t-60">
-                        <a href="ajax/4col-portfolio/load-more.html" class="cbp-l-loadMore-link btn btn-sm c-btn-square c-btn-border-2x c-btn-dark  c-btn-uppercase">
-                            <span class="cbp-l-loadMore-defaultText">LOAD MORE</span>
-                            <span class="cbp-l-loadMore-loadingText">LOADING...</span>
-                            <span class="cbp-l-loadMore-noMoreLoading">NO MORE WORKS</span>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -182,21 +204,31 @@
         <script src="assets/plugins/jquery.min.js" type="text/javascript"></script>
         <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
         <!-- END: CORE PLUGINS -->
-        <!-- BEGIN: LAYOUT PLUGINS -->
-        <script src="assets/plugins/cubeportfolio/js/jquery.cubeportfolio.min.js" type="text/javascript"></script>
-        <!-- END: LAYOUT PLUGINS -->
         <!-- BEGIN: THEME SCRIPTS -->
 
         <script>
-            $(document).ready(function() {
-
+            var app = angular.module('csmrAPP', []);
+            app.factory("sharedScope", function() {
+                var jwt_token = Cookies.get('jwt_token');
+                var loginStatus, email = "";
+                if (jwt_token == undefined) {
+                    loginStatus = false;
+                } else {
+                    var user_info = JSON.parse(atob(jwt_token.split('.')[1]));
+                    email = user_info.email;
+                    loginStatus = true;
+                }
+                return {
+                    loginData: {
+                        loginStatus: loginStatus,
+                        loginEmail: email
+                    }
+                };
             });
         </script>
         <script src="assets/controller/loginController.js"></script>
+        <script src="assets/controller/movieController.js"></script>
         <!-- END: THEME SCRIPTS -->
-        <!-- BEGIN: PAGE SCRIPTS -->
-        <script src="assets/base/js/scripts/pages/4col-portfolio.js" type="text/javascript"></script>
-        <!-- END: PAGE SCRIPTS -->
         <!-- END: LAYOUT/BASE/BOTTOM -->
     </body>
 

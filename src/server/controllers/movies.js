@@ -12,10 +12,11 @@ let getMovieRecommand = async(ctx, next) => {
             let user = jwt.verify(token.replace('Bearer ', ''), CONFIG.JWT_SECRET);
             let user_id = await userFunction.getUserId(user.email);
             let recommand_movies_id = await userBasedCF.recommend(user_id, from, count);
+            let movies = await movieFunction.getMovieWithRate();
             ctx.send(200, {
                 status: 'success',
                 description: 'get personal recommendation list',
-                movies: []
+                movies: movies.slice(from, count)
             });
         } else {
             let movies = await movieFunction.getMovieWithRate();
@@ -56,8 +57,13 @@ let getMovierRateList = async(ctx, next) => {
 
 let rateMovie = async(ctx, next) => {
     try {
+        let token = ctx.request.headers['authorization'];
+        let user = jwt.verify(token.replace('Bearer ', ''), CONFIG.JWT_SECRET);
+        let user_id = await userFunction.getUserId(user.email);
         let movie_id = ctx.request.body.movie_id;
         let rate = ctx.request.body.rate;
+
+        await movieFunction.rateMovie(user_id, movie_id, rate);
         ctx.send(200, {
             status: 'success',
             description: 'rate movie success.'

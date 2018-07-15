@@ -1,14 +1,7 @@
-var app = angular.module('csmrAPP', []);
-app.controller('loginCtrl', function($scope, $http) {
-    var jwt_token = Cookies.get('jwt_token');
+app.controller('loginCtrl', function($scope, sharedScope, $http) {
+
     $scope.data = {};
-    if (jwt_token == undefined) {
-        $scope.data.loginStatus = false;
-    } else {
-        var user_info = JSON.parse(atob(jwt_token.split('.')[1]));
-        $scope.data.email = user_info.email;
-        $scope.data.loginStatus = true;
-    }
+    $scope.loginData = sharedScope.loginData;
 
     $scope.$watch('data.email', function(newValue, oldValue) {
         if (/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test($scope.data.email)) {
@@ -39,7 +32,8 @@ app.controller('loginCtrl', function($scope, $http) {
                 .then(function success(res) {
                     $("#close_login_form").trigger('click');
                     Cookies.set('jwt_token', res.data.token);
-                    $scope.data.loginStatus = true;
+                    $scope.loginData.loginStatus = true;
+                    $scope.loginData.loginEmail = email;
                     $scope.data.login_error = "";
                 }, function error(res) {
                     $scope.data.login_error = res.data.description;
@@ -48,7 +42,8 @@ app.controller('loginCtrl', function($scope, $http) {
     }
 
     $scope.logout = function() {
-        $scope.data.loginStatus = false;
+        $scope.loginData.loginStatus = false;
+        $scope.loginData.loginEmail = "";
         Cookies.remove('jwt_token');
     }
 
@@ -95,7 +90,8 @@ app.controller('loginCtrl', function($scope, $http) {
                     $("#close_sign_up_form").trigger('click');
                     Cookies.set('jwt_token', res.data.token);
                     $scope.data.sign_up_email_check = false;
-                    $scope.data.loginStatus = true;
+                    $scope.loginData.loginStatus = true;
+                    $scope.loginData.loginEmail = email;
                     $scope.data.sign_up_error = "";
                 }, function error(res) {
                     $scope.data.sign_up_error = res.data.description;

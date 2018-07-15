@@ -96,6 +96,7 @@ app.controller('movieCtrl', function($scope, sharedScope, $http) {
     });
 
     $scope.$watch('loginData.loginStatus', function(newValue, oldValue) {
+        getRecommendList();
         getRateList();
     });
 });

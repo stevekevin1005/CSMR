@@ -29,7 +29,7 @@ app.controller('movieCtrl', function($scope, sharedScope, $http) {
         if (jwt_token != undefined) {
             var option = {
                 url: '/api/movie/rate_list',
-                params: { from: 0, count: 4 },
+                params: { from: 0, count: 100 },
                 headers: { "Authorization": 'Bearer ' + jwt_token },
                 method: 'get'
             }
@@ -67,9 +67,35 @@ app.controller('movieCtrl', function($scope, sharedScope, $http) {
                 });
     }
 
+    $scope.update = function(value) {
+        var movie_id = value.split('_')[0];
+        var score = value.split('_')[1];
+
+        var jwt_token = Cookies.get('jwt_token');
+
+        var option = {
+            url: '/api/movie/update_score',
+            data: { movie_id: movie_id, rate: score },
+            headers: { "Authorization": 'Bearer ' + jwt_token },
+            method: 'put'
+        }
+        $http(option)
+            .then(function success(res) {
+                    getRateList();
+                },
+                function error(res) {
+
+                });
+    }
+
     $scope.$watch('data.recommand_list', function(newValue, oldValue) {
         if (newValue.length == 0) {
             getRecommendList();
         }
+        getRateList();
+    });
+
+    $scope.$watch('loginData.loginStatus', function(newValue, oldValue) {
+        getRateList();
     });
 });

@@ -13,6 +13,10 @@ function addRoutes(router, routes) {
                 router.get(route.uri, route.fn)
                 console.log(`Register get url: ${route.uri}`)
                 break
+            case 'put':
+                router.put(route.uri, route.fn)
+                console.log(`Register put url: ${route.uri}`)
+                break
             default:
                 console.log(`Invalid url: ${route}`)
         }

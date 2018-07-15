@@ -154,15 +154,15 @@
                         <div class="col-md-3" ng-repeat="movie in data.recommand_list">
                             <div class="cbp-caption">
                                 <div class="cbp-caption-defaultWrap">
-                                    <img src="assets/base/img/content/stock/60.jpg" alt="">
+                                    <img src="assets/base/img/content/stock/{{ movie.id }}.jpg" alt="">
                                 </div>
                             </div>
                             <div class="cbp-l-grid-projects-title" ng-if="loginData.loginStatus">
-                                <label class="radio-inline"><input type="radio" name="optradio" ng-model="data.rate" value="{{ movie.id }}_1" ng-change="rate(data.rate)">1</label>
-                                <label class="radio-inline"><input type="radio" name="optradio" ng-model="data.rate" value="{{ movie.id }}_2" ng-change="rate(data.rate)">2</label>
-                                <label class="radio-inline"><input type="radio" name="optradio" ng-model="data.rate" value="{{ movie.id }}_3" ng-change="rate(data.rate)">3</label>
-                                <label class="radio-inline"><input type="radio" name="optradio" ng-model="data.rate" value="{{ movie.id }}_4" ng-change="rate(data.rate)">4</label>
-                                <label class="radio-inline"><input type="radio" name="optradio" ng-model="data.rate" value="{{ movie.id }}_5" ng-change="rate(data.rate)">5</label>
+                                <label class="radio-inline"><input type="radio" ng-model="data.rate" value="{{ movie.id }}_1" ng-change="rate(data.rate)">1</label>
+                                <label class="radio-inline"><input type="radio" ng-model="data.rate" value="{{ movie.id }}_2" ng-change="rate(data.rate)">2</label>
+                                <label class="radio-inline"><input type="radio" ng-model="data.rate" value="{{ movie.id }}_3" ng-change="rate(data.rate)">3</label>
+                                <label class="radio-inline"><input type="radio" ng-model="data.rate" value="{{ movie.id }}_4" ng-change="rate(data.rate)">4</label>
+                                <label class="radio-inline"><input type="radio" ng-model="data.rate" value="{{ movie.id }}_5" ng-change="rate(data.rate)">5</label>
                             </div>
                             <div class="cbp-l-grid-projects-title">{{ movie.title }}</div>
                             <div class="cbp-l-grid-projects-desc">{{ movie.genre }}</div>
@@ -175,21 +175,21 @@
                 <div class="container">
                     <h1>Scored List</h1>
                     <div id="grid-container" class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-3" ng-repeat="movie in data.rated_list">
                             <div class="cbp-caption">
                                 <div class="cbp-caption-defaultWrap">
-                                    <img src="assets/base/img/content/stock/60.jpg" alt="">
+                                    <img ng-src="assets/base/img/content/stock/{{ movie.id }}.jpg" alt="">
                                 </div>
                             </div>
                             <div class="cbp-l-grid-projects-title">
-                                <label class="radio-inline"><input type="radio" name="optradio">1</label>
-                                <label class="radio-inline"><input type="radio" name="optradio">2</label>
-                                <label class="radio-inline"><input type="radio" name="optradio">3</label>
-                                <label class="radio-inline"><input type="radio" name="optradio">4</label>
-                                <label class="radio-inline"><input type="radio" name="optradio">5</label>
+                                <label class="radio-inline"><input type="radio"  ng-model="data.updateScore" value="{{ movie.id }}_1" ng-change="update(data.updateScore)" ng-checked="{{movie.rate}} == 1">1</label>
+                                <label class="radio-inline"><input type="radio"  ng-model="data.updateScore" value="{{ movie.id }}_2" ng-change="update(data.updateScore)" ng-checked="{{movie.rate}} == 2">2</label>
+                                <label class="radio-inline"><input type="radio"  ng-model="data.updateScore" value="{{ movie.id }}_3" ng-change="update(data.updateScore)" ng-checked="{{movie.rate}} == 3">3</label>
+                                <label class="radio-inline"><input type="radio"  ng-model="data.updateScore" value="{{ movie.id }}_4" ng-change="update(data.updateScore)" ng-checked="{{movie.rate}} == 4">4</label>
+                                <label class="radio-inline"><input type="radio"  ng-model="data.updateScore" value="{{ movie.id }}_5" ng-change="update(data.updateScore)" ng-checked="{{movie.rate}} == 5">5</label>
                             </div>
-                            <div class="cbp-l-grid-projects-title">Dashboard</div>
-                            <div class="cbp-l-grid-projects-desc">Web Design / Graphic</div>
+                            <div class="cbp-l-grid-projects-title">{{ movie.title }}</div>
+                            <div class="cbp-l-grid-projects-desc">{{ movie.genre }}</div>
                         </div>
                     </div>
                 </div>
@@ -232,4 +232,4 @@
         <!-- END: LAYOUT/BASE/BOTTOM -->
     </body>
 
-</html>
+    <!-- </html> -->
